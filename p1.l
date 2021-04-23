@@ -1,3 +1,4 @@
+/* count the number of vowels and consonents*/
 %{
     int c=0,v=0;
 %}

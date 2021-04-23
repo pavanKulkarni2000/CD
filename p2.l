@@ -1,3 +1,4 @@
+/* count the number of space and other characters*/
 %{
     int c=0,v=0;
 %}
