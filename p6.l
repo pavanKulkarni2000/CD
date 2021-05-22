@@ -1,6 +1,7 @@
 %{
     #define printCt(str,val){ printf("Count of %s = %d\n",str,val);}
     int n=0,p=0,nf=0,pf=0,z=0,dz=0;
+    short file_input=0;
 %}
 digit [0-9]
 num {digit}+
@@ -9,7 +10,7 @@ pnum [+]?{num}
 deci {num}?[.]{num}
 pdeci [+]?{deci}
 ndeci [-]{deci}
-zero [+-]?0+([.]{num})?
+zero [+-]?0+([.]0+)?
 %%
 ({ndeci}|{pdeci}|{nnum}|{nnum})[/]{zero} dz++;
 {zero}([/]({ndeci}|{pdeci}|{nnum}|{nnum}))? z++;
@@ -21,18 +22,20 @@ zero [+-]?0+([.]{num})?
 {pdeci} pf++;
 {nnum} n++;
 {pnum} p++;
-. printf("other : %s\n",yytext);
+. ;
+\n if(file_input) ; else return 0;
 %%
 int main(int argc,char *argv[]){
     
     if(argc>1){
+        file_input=1;
         yyin = fopen(argv[1],"r");
         if(argc>2)
             yyout = fopen(argv[2],"w");
     }
     yylex();
-    printCt("Divide by Zeros",p);
-    printCt("Zeros",p);
+    printCt("Divide by Zeros",dz);
+    printCt("Zeros",z);
     printCt("Positive numbers",p);
     printCt("Negative numbers",n);
     printCt("Positive fraction numbers",pf);
