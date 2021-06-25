@@ -21,7 +21,7 @@
 
 
 %%
-S: A{printf("Valid!\n");};
+S: A{printf("Valid!\n\n");};
 A: ID  '=' A {$$=AddTacLine(OpdId($1),$3,'=');}| E {$$=$1;};
 E: E '+' E {$$=AddTacLine($1,$3,'+');}
 | E '-' E {$$=AddTacLine($1,$3,'-');}
@@ -30,7 +30,7 @@ E: E '+' E {$$=AddTacLine($1,$3,'+');}
 | '(' E ')' {$$=$2;}
 | NUM {$$=OpdNum($1);}
 | ID {$$=OpdId($1);}
-| '-' E {$$=AddTacLine(noneOpd,$2,'-');}
+| '-' E {$$=AddTacLine($2,noneOpd,'-');}
 ;
 %%
 
@@ -48,7 +48,6 @@ int main(int argc,char *argv[])
     if(argc==1 || !(yyin=fopen(argv[1],"r")))
         printf("Enter expression  : \n");
     yyparse();
-    for(int i=0;i<tacIndex;i++){
-        printTac(i);
-    }
+    printTac();
+    printQuadruples();
 }
