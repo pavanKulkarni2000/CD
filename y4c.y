@@ -3,7 +3,6 @@
     #include<string.h>
     #include<stdlib.h>
     #include"operands.h"
-        
 %}
 
 %union
@@ -41,25 +40,13 @@ yyerror(char *s)
     printf("%s",s);
     exit(0);
 }
-void printOpd(struct Operand myopd){
-    switch(myopd.type){
-        case id:printf("%s",symbols[myopd.val]);break;
-        case num:printf("%d",myopd.val);break;
-        case temp:printf("t%d",myopd.val);break;
-    }
-}
-void printTac(int i){
-    printOpd(TAC[i].lhs);
-    printf("=");
-    printOpd(TAC[i].opd1);
-    printf("%c",TAC[i].opr);
-    printOpd(TAC[i].opd2);
-    printf("\n");
-}
 
-main()
+int main(int argc,char *argv[])
 {
-    printf("\n Enter the Expression : ");
+    //to read input from the file
+    extern FILE *yyin;
+    if(argc==1 || !(yyin=fopen(argv[1],"r")))
+        printf("Enter expression  : \n");
     yyparse();
     for(int i=0;i<tacIndex;i++){
         printTac(i);

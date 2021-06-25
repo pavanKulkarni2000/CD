@@ -40,4 +40,19 @@ struct Operand AddTacLine(struct Operand opd1,struct Operand opd2, char opr){
     }
     return TAC[tacIndex++].lhs;
 }
+void printOpd(struct Operand myopd){
+    switch(myopd.type){
+        case id:printf("%s",symbols[myopd.val]);break;
+        case num:printf("%d",myopd.val);break;
+        case temp:printf("t%d",myopd.val);break;
+    }
+}
+void printTac(int i){
+    printOpd(TAC[i].lhs);
+    printf("=");
+    printOpd(TAC[i].opd1);
+    printf("%c",TAC[i].opr);
+    printOpd(TAC[i].opd2);
+    printf("\n");
+}
 #endif //OPERANDS_H
