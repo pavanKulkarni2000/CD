@@ -49,23 +49,28 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    FOR = 258,
-    ID = 259,
-    OP = 260,
-    UNOP = 261,
-    NUM = 262
+    ID = 258,
+    NUM = 259
   };
 #endif
 /* Tokens.  */
-#define FOR 258
-#define ID 259
-#define OP 260
-#define UNOP 261
-#define NUM 262
+#define ID 258
+#define NUM 259
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 10 "y4c.y"
+
+    struct Operand opd;
+    char * name;
+    int val;
+
+#line 71 "y.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

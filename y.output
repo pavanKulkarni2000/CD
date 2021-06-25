@@ -1,0 +1,907 @@
+Rules useless in parser due to conflicts
+
+   16 OPTIONAL_ELSE: ELSE IF_STATEMENT
+
+
+State 62 conflicts: 1 shift/reduce
+State 67 conflicts: 11 reduce/reduce
+
+
+Grammar
+
+    0 $accept: S $end
+
+    1 S: FUNC
+
+    2 FUNC: TYPE ID '(' FPARAM ')' FBODY
+
+    3 FPARAM: TYPE ID ',' FPARAM
+    4       | TYPE ID
+
+    5 FBODY: '{' FBODY1 '}'
+
+    6 FBODY1: FBODY_STATEMENT FBODY1
+    7       | %empty
+
+    8 FBODY_STATEMENT: DECLARATION
+    9                | EXP ';'
+   10                | IF_STATEMENT
+   11                | WHILE_STATEMENT
+   12                | FOR_STATEMENT
+   13                | RETURN EXP ';'
+
+   14 IF_STATEMENT: IF '(' EXP ')' FBODY2 OPTIONAL_ELSE
+
+   15 OPTIONAL_ELSE: ELSE FBODY2
+   16              | ELSE IF_STATEMENT
+   17              | %empty
+
+   18 WHILE_STATEMENT: WHILE '(' EXP ')' FBODY2
+
+   19 FOR_STATEMENT: FOR '(' EXP ';' EXP ';' EXP ')' FBODY2
+
+   20 FBODY2: FBODY
+   21       | FBODY_STATEMENT
+
+   22 DECLARATION: TYPE ID ';'
+
+   23 EXP: EXPA
+   24    | EXPOP
+   25    | %empty
+
+   26 EXPA: ID '=' EXPA
+   27     | ID '=' EXPOP
+
+   28 EXPOP: EXPOP OP ANYU
+   29      | ANYU
+
+   30 ANYU: ANY
+   31     | ANY UNOP
+   32     | UNOP ANY
+
+   33 ANY: ID
+   34    | NUM
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '(' (40) 2 14 18 19
+    ')' (41) 2 14 18 19
+    ',' (44) 3
+    ';' (59) 9 13 19 22
+    '=' (61) 26 27
+    '{' (123) 5
+    '}' (125) 5
+    error (256)
+    TYPE (258) 2 3 4 22
+    ID (259) 2 3 4 22 26 27 33
+    OP (260) 28
+    UNOP (261) 31 32
+    NUM (262) 34
+    RETURN (263) 13
+    FOR (264) 19
+    WHILE (265) 18
+    IF (266) 14
+    ELSE (267) 15 16
+
+
+Nonterminals, with rules where they appear
+
+    $accept (20)
+        on left: 0
+    S (21)
+        on left: 1
+        on right: 0
+    FUNC (22)
+        on left: 2
+        on right: 1
+    FPARAM (23)
+        on left: 3 4
+        on right: 2 3
+    FBODY (24)
+        on left: 5
+        on right: 2 20
+    FBODY1 (25)
+        on left: 6 7
+        on right: 5 6
+    FBODY_STATEMENT (26)
+        on left: 8 9 10 11 12 13
+        on right: 6 21
+    IF_STATEMENT (27)
+        on left: 14
+        on right: 10 16
+    OPTIONAL_ELSE (28)
+        on left: 15 16 17
+        on right: 14
+    WHILE_STATEMENT (29)
+        on left: 18
+        on right: 11
+    FOR_STATEMENT (30)
+        on left: 19
+        on right: 12
+    FBODY2 (31)
+        on left: 20 21
+        on right: 14 15 18 19
+    DECLARATION (32)
+        on left: 22
+        on right: 8
+    EXP (33)
+        on left: 23 24 25
+        on right: 9 13 14 18 19
+    EXPA (34)
+        on left: 26 27
+        on right: 23 26
+    EXPOP (35)
+        on left: 28 29
+        on right: 24 27 28
+    ANYU (36)
+        on left: 30 31 32
+        on right: 28 29
+    ANY (37)
+        on left: 33 34
+        on right: 30 31 32
+
+
+State 0
+
+    0 $accept: . S $end
+
+    TYPE  shift, and go to state 1
+
+    S     go to state 2
+    FUNC  go to state 3
+
+
+State 1
+
+    2 FUNC: TYPE . ID '(' FPARAM ')' FBODY
+
+    ID  shift, and go to state 4
+
+
+State 2
+
+    0 $accept: S . $end
+
+    $end  shift, and go to state 5
+
+
+State 3
+
+    1 S: FUNC .
+
+    $default  reduce using rule 1 (S)
+
+
+State 4
+
+    2 FUNC: TYPE ID . '(' FPARAM ')' FBODY
+
+    '('  shift, and go to state 6
+
+
+State 5
+
+    0 $accept: S $end .
+
+    $default  accept
+
+
+State 6
+
+    2 FUNC: TYPE ID '(' . FPARAM ')' FBODY
+
+    TYPE  shift, and go to state 7
+
+    FPARAM  go to state 8
+
+
+State 7
+
+    3 FPARAM: TYPE . ID ',' FPARAM
+    4       | TYPE . ID
+
+    ID  shift, and go to state 9
+
+
+State 8
+
+    2 FUNC: TYPE ID '(' FPARAM . ')' FBODY
+
+    ')'  shift, and go to state 10
+
+
+State 9
+
+    3 FPARAM: TYPE ID . ',' FPARAM
+    4       | TYPE ID .
+
+    ','  shift, and go to state 11
+
+    $default  reduce using rule 4 (FPARAM)
+
+
+State 10
+
+    2 FUNC: TYPE ID '(' FPARAM ')' . FBODY
+
+    '{'  shift, and go to state 12
+
+    FBODY  go to state 13
+
+
+State 11
+
+    3 FPARAM: TYPE ID ',' . FPARAM
+
+    TYPE  shift, and go to state 7
+
+    FPARAM  go to state 14
+
+
+State 12
+
+    5 FBODY: '{' . FBODY1 '}'
+
+    TYPE    shift, and go to state 15
+    ID      shift, and go to state 16
+    UNOP    shift, and go to state 17
+    NUM     shift, and go to state 18
+    RETURN  shift, and go to state 19
+    FOR     shift, and go to state 20
+    WHILE   shift, and go to state 21
+    IF      shift, and go to state 22
+
+    ';'       reduce using rule 25 (EXP)
+    $default  reduce using rule 7 (FBODY1)
+
+    FBODY1           go to state 23
+    FBODY_STATEMENT  go to state 24
+    IF_STATEMENT     go to state 25
+    WHILE_STATEMENT  go to state 26
+    FOR_STATEMENT    go to state 27
+    DECLARATION      go to state 28
+    EXP              go to state 29
+    EXPA             go to state 30
+    EXPOP            go to state 31
+    ANYU             go to state 32
+    ANY              go to state 33
+
+
+State 13
+
+    2 FUNC: TYPE ID '(' FPARAM ')' FBODY .
+
+    $default  reduce using rule 2 (FUNC)
+
+
+State 14
+
+    3 FPARAM: TYPE ID ',' FPARAM .
+
+    $default  reduce using rule 3 (FPARAM)
+
+
+State 15
+
+   22 DECLARATION: TYPE . ID ';'
+
+    ID  shift, and go to state 34
+
+
+State 16
+
+   26 EXPA: ID . '=' EXPA
+   27     | ID . '=' EXPOP
+   33 ANY: ID .
+
+    '='  shift, and go to state 35
+
+    $default  reduce using rule 33 (ANY)
+
+
+State 17
+
+   32 ANYU: UNOP . ANY
+
+    ID   shift, and go to state 36
+    NUM  shift, and go to state 18
+
+    ANY  go to state 37
+
+
+State 18
+
+   34 ANY: NUM .
+
+    $default  reduce using rule 34 (ANY)
+
+
+State 19
+
+   13 FBODY_STATEMENT: RETURN . EXP ';'
+
+    ID    shift, and go to state 16
+    UNOP  shift, and go to state 17
+    NUM   shift, and go to state 18
+
+    $default  reduce using rule 25 (EXP)
+
+    EXP    go to state 38
+    EXPA   go to state 30
+    EXPOP  go to state 31
+    ANYU   go to state 32
+    ANY    go to state 33
+
+
+State 20
+
+   19 FOR_STATEMENT: FOR . '(' EXP ';' EXP ';' EXP ')' FBODY2
+
+    '('  shift, and go to state 39
+
+
+State 21
+
+   18 WHILE_STATEMENT: WHILE . '(' EXP ')' FBODY2
+
+    '('  shift, and go to state 40
+
+
+State 22
+
+   14 IF_STATEMENT: IF . '(' EXP ')' FBODY2 OPTIONAL_ELSE
+
+    '('  shift, and go to state 41
+
+
+State 23
+
+    5 FBODY: '{' FBODY1 . '}'
+
+    '}'  shift, and go to state 42
+
+
+State 24
+
+    6 FBODY1: FBODY_STATEMENT . FBODY1
+
+    TYPE    shift, and go to state 15
+    ID      shift, and go to state 16
+    UNOP    shift, and go to state 17
+    NUM     shift, and go to state 18
+    RETURN  shift, and go to state 19
+    FOR     shift, and go to state 20
+    WHILE   shift, and go to state 21
+    IF      shift, and go to state 22
+
+    ';'       reduce using rule 25 (EXP)
+    $default  reduce using rule 7 (FBODY1)
+
+    FBODY1           go to state 43
+    FBODY_STATEMENT  go to state 24
+    IF_STATEMENT     go to state 25
+    WHILE_STATEMENT  go to state 26
+    FOR_STATEMENT    go to state 27
+    DECLARATION      go to state 28
+    EXP              go to state 29
+    EXPA             go to state 30
+    EXPOP            go to state 31
+    ANYU             go to state 32
+    ANY              go to state 33
+
+
+State 25
+
+   10 FBODY_STATEMENT: IF_STATEMENT .
+
+    $default  reduce using rule 10 (FBODY_STATEMENT)
+
+
+State 26
+
+   11 FBODY_STATEMENT: WHILE_STATEMENT .
+
+    $default  reduce using rule 11 (FBODY_STATEMENT)
+
+
+State 27
+
+   12 FBODY_STATEMENT: FOR_STATEMENT .
+
+    $default  reduce using rule 12 (FBODY_STATEMENT)
+
+
+State 28
+
+    8 FBODY_STATEMENT: DECLARATION .
+
+    $default  reduce using rule 8 (FBODY_STATEMENT)
+
+
+State 29
+
+    9 FBODY_STATEMENT: EXP . ';'
+
+    ';'  shift, and go to state 44
+
+
+State 30
+
+   23 EXP: EXPA .
+
+    $default  reduce using rule 23 (EXP)
+
+
+State 31
+
+   24 EXP: EXPOP .
+   28 EXPOP: EXPOP . OP ANYU
+
+    OP  shift, and go to state 45
+
+    $default  reduce using rule 24 (EXP)
+
+
+State 32
+
+   29 EXPOP: ANYU .
+
+    $default  reduce using rule 29 (EXPOP)
+
+
+State 33
+
+   30 ANYU: ANY .
+   31     | ANY . UNOP
+
+    UNOP  shift, and go to state 46
+
+    $default  reduce using rule 30 (ANYU)
+
+
+State 34
+
+   22 DECLARATION: TYPE ID . ';'
+
+    ';'  shift, and go to state 47
+
+
+State 35
+
+   26 EXPA: ID '=' . EXPA
+   27     | ID '=' . EXPOP
+
+    ID    shift, and go to state 16
+    UNOP  shift, and go to state 17
+    NUM   shift, and go to state 18
+
+    EXPA   go to state 48
+    EXPOP  go to state 49
+    ANYU   go to state 32
+    ANY    go to state 33
+
+
+State 36
+
+   33 ANY: ID .
+
+    $default  reduce using rule 33 (ANY)
+
+
+State 37
+
+   32 ANYU: UNOP ANY .
+
+    $default  reduce using rule 32 (ANYU)
+
+
+State 38
+
+   13 FBODY_STATEMENT: RETURN EXP . ';'
+
+    ';'  shift, and go to state 50
+
+
+State 39
+
+   19 FOR_STATEMENT: FOR '(' . EXP ';' EXP ';' EXP ')' FBODY2
+
+    ID    shift, and go to state 16
+    UNOP  shift, and go to state 17
+    NUM   shift, and go to state 18
+
+    $default  reduce using rule 25 (EXP)
+
+    EXP    go to state 51
+    EXPA   go to state 30
+    EXPOP  go to state 31
+    ANYU   go to state 32
+    ANY    go to state 33
+
+
+State 40
+
+   18 WHILE_STATEMENT: WHILE '(' . EXP ')' FBODY2
+
+    ID    shift, and go to state 16
+    UNOP  shift, and go to state 17
+    NUM   shift, and go to state 18
+
+    $default  reduce using rule 25 (EXP)
+
+    EXP    go to state 52
+    EXPA   go to state 30
+    EXPOP  go to state 31
+    ANYU   go to state 32
+    ANY    go to state 33
+
+
+State 41
+
+   14 IF_STATEMENT: IF '(' . EXP ')' FBODY2 OPTIONAL_ELSE
+
+    ID    shift, and go to state 16
+    UNOP  shift, and go to state 17
+    NUM   shift, and go to state 18
+
+    $default  reduce using rule 25 (EXP)
+
+    EXP    go to state 53
+    EXPA   go to state 30
+    EXPOP  go to state 31
+    ANYU   go to state 32
+    ANY    go to state 33
+
+
+State 42
+
+    5 FBODY: '{' FBODY1 '}' .
+
+    $default  reduce using rule 5 (FBODY)
+
+
+State 43
+
+    6 FBODY1: FBODY_STATEMENT FBODY1 .
+
+    $default  reduce using rule 6 (FBODY1)
+
+
+State 44
+
+    9 FBODY_STATEMENT: EXP ';' .
+
+    $default  reduce using rule 9 (FBODY_STATEMENT)
+
+
+State 45
+
+   28 EXPOP: EXPOP OP . ANYU
+
+    ID    shift, and go to state 36
+    UNOP  shift, and go to state 17
+    NUM   shift, and go to state 18
+
+    ANYU  go to state 54
+    ANY   go to state 33
+
+
+State 46
+
+   31 ANYU: ANY UNOP .
+
+    $default  reduce using rule 31 (ANYU)
+
+
+State 47
+
+   22 DECLARATION: TYPE ID ';' .
+
+    $default  reduce using rule 22 (DECLARATION)
+
+
+State 48
+
+   26 EXPA: ID '=' EXPA .
+
+    $default  reduce using rule 26 (EXPA)
+
+
+State 49
+
+   27 EXPA: ID '=' EXPOP .
+   28 EXPOP: EXPOP . OP ANYU
+
+    OP  shift, and go to state 45
+
+    $default  reduce using rule 27 (EXPA)
+
+
+State 50
+
+   13 FBODY_STATEMENT: RETURN EXP ';' .
+
+    $default  reduce using rule 13 (FBODY_STATEMENT)
+
+
+State 51
+
+   19 FOR_STATEMENT: FOR '(' EXP . ';' EXP ';' EXP ')' FBODY2
+
+    ';'  shift, and go to state 55
+
+
+State 52
+
+   18 WHILE_STATEMENT: WHILE '(' EXP . ')' FBODY2
+
+    ')'  shift, and go to state 56
+
+
+State 53
+
+   14 IF_STATEMENT: IF '(' EXP . ')' FBODY2 OPTIONAL_ELSE
+
+    ')'  shift, and go to state 57
+
+
+State 54
+
+   28 EXPOP: EXPOP OP ANYU .
+
+    $default  reduce using rule 28 (EXPOP)
+
+
+State 55
+
+   19 FOR_STATEMENT: FOR '(' EXP ';' . EXP ';' EXP ')' FBODY2
+
+    ID    shift, and go to state 16
+    UNOP  shift, and go to state 17
+    NUM   shift, and go to state 18
+
+    $default  reduce using rule 25 (EXP)
+
+    EXP    go to state 58
+    EXPA   go to state 30
+    EXPOP  go to state 31
+    ANYU   go to state 32
+    ANY    go to state 33
+
+
+State 56
+
+   18 WHILE_STATEMENT: WHILE '(' EXP ')' . FBODY2
+
+    TYPE    shift, and go to state 15
+    ID      shift, and go to state 16
+    UNOP    shift, and go to state 17
+    NUM     shift, and go to state 18
+    RETURN  shift, and go to state 19
+    FOR     shift, and go to state 20
+    WHILE   shift, and go to state 21
+    IF      shift, and go to state 22
+    '{'     shift, and go to state 12
+
+    $default  reduce using rule 25 (EXP)
+
+    FBODY            go to state 59
+    FBODY_STATEMENT  go to state 60
+    IF_STATEMENT     go to state 25
+    WHILE_STATEMENT  go to state 26
+    FOR_STATEMENT    go to state 27
+    FBODY2           go to state 61
+    DECLARATION      go to state 28
+    EXP              go to state 29
+    EXPA             go to state 30
+    EXPOP            go to state 31
+    ANYU             go to state 32
+    ANY              go to state 33
+
+
+State 57
+
+   14 IF_STATEMENT: IF '(' EXP ')' . FBODY2 OPTIONAL_ELSE
+
+    TYPE    shift, and go to state 15
+    ID      shift, and go to state 16
+    UNOP    shift, and go to state 17
+    NUM     shift, and go to state 18
+    RETURN  shift, and go to state 19
+    FOR     shift, and go to state 20
+    WHILE   shift, and go to state 21
+    IF      shift, and go to state 22
+    '{'     shift, and go to state 12
+
+    $default  reduce using rule 25 (EXP)
+
+    FBODY            go to state 59
+    FBODY_STATEMENT  go to state 60
+    IF_STATEMENT     go to state 25
+    WHILE_STATEMENT  go to state 26
+    FOR_STATEMENT    go to state 27
+    FBODY2           go to state 62
+    DECLARATION      go to state 28
+    EXP              go to state 29
+    EXPA             go to state 30
+    EXPOP            go to state 31
+    ANYU             go to state 32
+    ANY              go to state 33
+
+
+State 58
+
+   19 FOR_STATEMENT: FOR '(' EXP ';' EXP . ';' EXP ')' FBODY2
+
+    ';'  shift, and go to state 63
+
+
+State 59
+
+   20 FBODY2: FBODY .
+
+    $default  reduce using rule 20 (FBODY2)
+
+
+State 60
+
+   21 FBODY2: FBODY_STATEMENT .
+
+    $default  reduce using rule 21 (FBODY2)
+
+
+State 61
+
+   18 WHILE_STATEMENT: WHILE '(' EXP ')' FBODY2 .
+
+    $default  reduce using rule 18 (WHILE_STATEMENT)
+
+
+State 62
+
+   14 IF_STATEMENT: IF '(' EXP ')' FBODY2 . OPTIONAL_ELSE
+
+    ELSE  shift, and go to state 64
+
+    ELSE      [reduce using rule 17 (OPTIONAL_ELSE)]
+    $default  reduce using rule 17 (OPTIONAL_ELSE)
+
+    OPTIONAL_ELSE  go to state 65
+
+
+State 63
+
+   19 FOR_STATEMENT: FOR '(' EXP ';' EXP ';' . EXP ')' FBODY2
+
+    ID    shift, and go to state 16
+    UNOP  shift, and go to state 17
+    NUM   shift, and go to state 18
+
+    $default  reduce using rule 25 (EXP)
+
+    EXP    go to state 66
+    EXPA   go to state 30
+    EXPOP  go to state 31
+    ANYU   go to state 32
+    ANY    go to state 33
+
+
+State 64
+
+   15 OPTIONAL_ELSE: ELSE . FBODY2
+   16              | ELSE . IF_STATEMENT
+
+    TYPE    shift, and go to state 15
+    ID      shift, and go to state 16
+    UNOP    shift, and go to state 17
+    NUM     shift, and go to state 18
+    RETURN  shift, and go to state 19
+    FOR     shift, and go to state 20
+    WHILE   shift, and go to state 21
+    IF      shift, and go to state 22
+    '{'     shift, and go to state 12
+
+    $default  reduce using rule 25 (EXP)
+
+    FBODY            go to state 59
+    FBODY_STATEMENT  go to state 60
+    IF_STATEMENT     go to state 67
+    WHILE_STATEMENT  go to state 26
+    FOR_STATEMENT    go to state 27
+    FBODY2           go to state 68
+    DECLARATION      go to state 28
+    EXP              go to state 29
+    EXPA             go to state 30
+    EXPOP            go to state 31
+    ANYU             go to state 32
+    ANY              go to state 33
+
+
+State 65
+
+   14 IF_STATEMENT: IF '(' EXP ')' FBODY2 OPTIONAL_ELSE .
+
+    $default  reduce using rule 14 (IF_STATEMENT)
+
+
+State 66
+
+   19 FOR_STATEMENT: FOR '(' EXP ';' EXP ';' EXP . ')' FBODY2
+
+    ')'  shift, and go to state 69
+
+
+State 67
+
+   10 FBODY_STATEMENT: IF_STATEMENT .
+   16 OPTIONAL_ELSE: ELSE IF_STATEMENT .
+
+    TYPE      reduce using rule 10 (FBODY_STATEMENT)
+    TYPE      [reduce using rule 16 (OPTIONAL_ELSE)]
+    ID        reduce using rule 10 (FBODY_STATEMENT)
+    ID        [reduce using rule 16 (OPTIONAL_ELSE)]
+    UNOP      reduce using rule 10 (FBODY_STATEMENT)
+    UNOP      [reduce using rule 16 (OPTIONAL_ELSE)]
+    NUM       reduce using rule 10 (FBODY_STATEMENT)
+    NUM       [reduce using rule 16 (OPTIONAL_ELSE)]
+    RETURN    reduce using rule 10 (FBODY_STATEMENT)
+    RETURN    [reduce using rule 16 (OPTIONAL_ELSE)]
+    FOR       reduce using rule 10 (FBODY_STATEMENT)
+    FOR       [reduce using rule 16 (OPTIONAL_ELSE)]
+    WHILE     reduce using rule 10 (FBODY_STATEMENT)
+    WHILE     [reduce using rule 16 (OPTIONAL_ELSE)]
+    IF        reduce using rule 10 (FBODY_STATEMENT)
+    IF        [reduce using rule 16 (OPTIONAL_ELSE)]
+    ELSE      reduce using rule 10 (FBODY_STATEMENT)
+    ELSE      [reduce using rule 16 (OPTIONAL_ELSE)]
+    '}'       reduce using rule 10 (FBODY_STATEMENT)
+    '}'       [reduce using rule 16 (OPTIONAL_ELSE)]
+    ';'       reduce using rule 10 (FBODY_STATEMENT)
+    ';'       [reduce using rule 16 (OPTIONAL_ELSE)]
+    $default  reduce using rule 10 (FBODY_STATEMENT)
+
+
+State 68
+
+   15 OPTIONAL_ELSE: ELSE FBODY2 .
+
+    $default  reduce using rule 15 (OPTIONAL_ELSE)
+
+
+State 69
+
+   19 FOR_STATEMENT: FOR '(' EXP ';' EXP ';' EXP ')' . FBODY2
+
+    TYPE    shift, and go to state 15
+    ID      shift, and go to state 16
+    UNOP    shift, and go to state 17
+    NUM     shift, and go to state 18
+    RETURN  shift, and go to state 19
+    FOR     shift, and go to state 20
+    WHILE   shift, and go to state 21
+    IF      shift, and go to state 22
+    '{'     shift, and go to state 12
+
+    $default  reduce using rule 25 (EXP)
+
+    FBODY            go to state 59
+    FBODY_STATEMENT  go to state 60
+    IF_STATEMENT     go to state 25
+    WHILE_STATEMENT  go to state 26
+    FOR_STATEMENT    go to state 27
+    FBODY2           go to state 70
+    DECLARATION      go to state 28
+    EXP              go to state 29
+    EXPA             go to state 30
+    EXPOP            go to state 31
+    ANYU             go to state 32
+    ANY              go to state 33
+
+
+State 70
+
+   19 FOR_STATEMENT: FOR '(' EXP ';' EXP ';' EXP ')' FBODY2 .
+
+    $default  reduce using rule 19 (FOR_STATEMENT)
