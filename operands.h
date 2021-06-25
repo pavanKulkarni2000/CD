@@ -66,6 +66,7 @@ void printTac(){
     for(int i=0;i<tacIndex;i++){
         printOpd(TAC[i].lhs);
         printf(" = ");
+        //if unary operator print operator operand1
         if( TAC[i].opd2.type==none){
             switch (TAC[i].opr)
             {
@@ -74,7 +75,9 @@ void printTac(){
                 default:printf("un-op ");break;
             }
             printOpd(TAC[i].opd1);
-        }else{
+        }
+        //if binary operator print operand1 operator operand2
+        else{
             printOpd(TAC[i].opd1);
             printf(" %c ",TAC[i].opr);
             printOpd(TAC[i].opd2);
@@ -104,6 +107,50 @@ void printQuadruples(){
         printOpd(TAC[i].opd2);
         printf("\t");
         printOpd(TAC[i].lhs);
+        printf("\n");
+    }
+    printf("\n");
+}
+
+void printTriples(){
+
+    printf( GREEN "Triples:\n" RESET);
+    printf( ORANGE "\top\targ1\targ2\n" RESET);
+    for(int i=0;i<tacIndex;i++){
+        //table index
+        printf("%d",i);
+        printf("|\t");
+
+        //operator
+        if( TAC[i].opd2.type==none){
+            switch (TAC[i].opr)
+            {
+                case '-':printf("minus\t");break;
+                case '=':printf("=\t");break;
+                default:printf("un-op\t");break;
+            }
+        }
+        else 
+            printf("%c\t",TAC[i].opr);
+
+        //operand1
+        if(TAC[i].opr=='=')
+            printOpd(TAC[i].lhs);
+        else if(TAC[i].opd1.type==temp)
+            printf("(%d)",TAC[i].opd1.val);
+        else
+            printOpd(TAC[i].opd1);
+        printf("\t");
+        //operand2
+        if(TAC[i].opr=='=')
+            if(TAC[i].opd1.type==temp)
+                printf("(%d)",TAC[i].opd1.val);
+            else
+                printOpd(TAC[i].opd1);
+        else if(TAC[i].opd2.type==temp)
+            printf("(%d)",TAC[i].opd2.val);
+        else
+            printOpd(TAC[i].opd2);
         printf("\n");
     }
     printf("\n");
