@@ -11,20 +11,15 @@
 #define RESET ""
 #endif
 
-#include "tac.h"
-#define  symTableSize 20
-
-char *symbols[symTableSize];
-int tacIndex=0;
-int tempIndex=0;
-int symIndex=0;
+#include "y4d_tac.h"
+#include <stdio.h>
 
 struct TacInstr TAC[20];
 
-struct Operand noneOpd=(struct Operand){none,0};
+struct Token noneOpd=(struct Token){none,0};
 
-struct Operand OpdNum(int val){
-    return (struct Operand){num,val};
+struct Token OpdNum(int val){
+    return (struct Token){num,val};
 }
 
 struct Operand OpdId(char * name){
@@ -154,5 +149,15 @@ void printTriples(){
         printf("\n");
     }
     printf("\n");
+}
+
+void printStatement(){
+
+    printTac();
+    printQuadruples();
+    printTriples();
+    symIndex=0;
+    tempIndex=0;
+    tacIndex=0;
 }
 #endif //OPERANDS_H

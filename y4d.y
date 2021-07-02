@@ -2,26 +2,25 @@
     #include<stdio.h>
     #include<string.h>
     #include<stdlib.h>
-    #include"y4c_operands.h"
+    #include"y4d_tokens.h"
 %}
 
 %union
 {
-    struct Operand opd;
-    char * name;
-    int val;
+    struct Token token;
 }
 
-%token <name> ID 
-%token <val> NUM
-%type <opd> S A E
+%token <token> ID IF NUM
+%type <token> S A E
 %right '='
 %left '+' '-'
 %left '*' '/'
 
 
 %%
-S: A {printf("Valid!\n\n");};
+S1: S { printStatement(); } S1| ;
+S: A ';' |
+IF '(' E ')' E {  };
 A: ID  '=' A {$$=AddTacLine(OpdId($1),$3,'=');}| E {$$=$1;};
 E: E '+' E {$$=AddTacLine($1,$3,'+');}
 | E '-' E {$$=AddTacLine($1,$3,'-');}
@@ -48,5 +47,4 @@ int main(int argc,char *argv[])
     if(argc==1 || !(yyin=fopen(argv[1],"r")))
         printf("Enter expression  : \n");
     yyparse();
-    printStatement();
 }
