@@ -4,9 +4,7 @@
     #include<stdlib.h>
 %}
 %%
-S:'a'S'b'
-|
-;
+S:'a'S'b'|;
 %%
 
 int main(int argc,char *argv[]){

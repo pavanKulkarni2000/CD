@@ -13,12 +13,15 @@ S:T { ans=$$; };
 T:T'+'T {$$=$1+$3;}
 |T'-'T {$$=$1-$3;}
 |T'*'T {$$=$1*$3;}
-|T'/'T {if($3==0)yyerror();else $$=$1/$3;}
+|T'/'T {if($3==0)yyerror("Division by zero!");else $$=$1/$3;}
 |'('T')' {$$=$2;}
-|'-'NUM {$$=-$2;}
+|'-'T {$$=-$2;}
 |NUM {$$=$1;};
 %%
-
+void yyerror(char *err){
+    printf("Error: %s\n",err);
+    exit(0);
+}
 int main(int argc,char *argv[]){
     
     if(argc>1)
@@ -27,9 +30,4 @@ int main(int argc,char *argv[]){
         printf("Enter expression\n");
     yyparse();
     printf("Result = %d\n", ans);
-}
-
-int yyerror(){
-    printf("Invalid expression\n");
-    exit(0);
 }

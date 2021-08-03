@@ -3,9 +3,9 @@
 set -e
 
 #lex file
-lex $1.l
+lex y$1.l
 
-yacc -d $1.y
+yacc -d y$1.y
 
 #compile
 cc -w lex.yy.c y.tab.c -ll

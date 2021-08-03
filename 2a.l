@@ -12,8 +12,8 @@ pdeci [+]?{deci}
 ndeci [-]{deci}
 zero [+-]?0+([.]0+)?
 %%
-({ndeci}|{pdeci}|{nnum}|{nnum})[/]{zero} dz++;
-{zero}([/]({ndeci}|{pdeci}|{nnum}|{nnum}))? z++;
+({ndeci}|{pdeci}|{nnum}|{pnum})[/]{zero} dz++;
+{zero}([/]({ndeci}|{pdeci}|{nnum}|{pnum}))? z++;
 ({ndeci}|{nnum})[/]({ndeci}|{nnum}) pf++;
 ({ndeci}|{nnum})[/]({pdeci}|{pnum}) nf++;
 ({pdeci}|{pnum})[/]({ndeci}|{nnum}) nf++;
@@ -32,6 +32,8 @@ int main(int argc,char *argv[]){
         yyin = fopen(argv[1],"r");
         if(argc>2)
             yyout = fopen(argv[2],"w");
+    }else{
+        printf("Enter expression\n");
     }
     yylex();
     printCt("Divide by Zeros",dz);

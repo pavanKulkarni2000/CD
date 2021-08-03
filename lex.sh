@@ -1,4 +1,7 @@
 #! /bin/sh
-lex p$1.l
+
+set -e
+
+lex $1.l
 cc lex.yy.c -ll
-./a.out $2 $3
+./a.out $1.in

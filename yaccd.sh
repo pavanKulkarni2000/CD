@@ -5,7 +5,9 @@ set -e
 #lex file
 lex $1.l
 
-yacc -d $1.y
+
+#yacc file
+yacc -d $1.y --debug -v
 
 #compile
 cc -w lex.yy.c y.tab.c -ll

@@ -1,5 +1,5 @@
 %{
-    #include"y4c_tac.h"
+    #include"4h2.h"
     #include "y.tab.h"
 %}
 

@@ -2,7 +2,7 @@
     #include<stdio.h>
     #include<string.h>
     #include<stdlib.h>
-    #include"y4c_operands.h"
+    #include"4h1.h"
 %}
 
 %union
@@ -47,6 +47,10 @@ int main(int argc,char *argv[])
     extern FILE *yyin;
     if(argc==1 || !(yyin=fopen(argv[1],"r")))
         printf("Enter expression  : \n");
+    if(argc>=3)
+        fp=fopen(argv[2],"w+");
+    else
+        fp=stdout;
     yyparse();
     printStatement();
 }
